@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    useLibrary 'org.apache.http.legacy'
     compileSdkVersion 27
     defaultConfig {
+
         applicationId "karjatonline.schoolbustrack"
         minSdkVersion 15
         targetSdkVersion 27
