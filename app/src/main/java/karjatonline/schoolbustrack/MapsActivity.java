@@ -26,7 +26,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -59,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 nameValuePairs.add(new BasicNameValuePair("name","lat lang"));
 
-                nameValuePairs.add(new BasicNameValuePair("mobile","");
+                nameValuePairs.add(new BasicNameValuePair("mobile","200"));
 
 
 //        Log.d(“well2”, “msg”);
@@ -156,8 +158,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    public void mapChange(double x){
-        LatLng syd=new LatLng(-34,x);
+    public void mapChange(String[] x){
+        String[] y=x;
+        double ab=Double.parseDouble(y[x.length-1]);
+        LatLng syd=new LatLng(-34,ab);
         mMap.addMarker(new MarkerOptions().position(syd).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(syd));
     }
@@ -191,12 +195,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //           Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                 //  tv.setText(s);
 
-
                 try {
-                    loadIntoListView(s);
-                } catch (JSONException e) {
+                    JSONArray jsonArray = new JSONArray(s);
+                    String[] heroes = new String[jsonArray.length()];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject obj = jsonArray.getJSONObject(i);
+                        heroes[i] = obj.getString("mobile");
+                    }
+                    mapChange(heroes);
+                }
+                catch (JSONException e){
                     e.printStackTrace();
                 }
+
+
+                /*try {
+                    loadIntoListView(s);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
             }
 
             //in this method we are fetching the json string
