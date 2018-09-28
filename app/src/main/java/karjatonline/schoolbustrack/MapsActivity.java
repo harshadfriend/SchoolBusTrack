@@ -57,42 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                ArrayList nameValuePairs = new ArrayList();
 
-                nameValuePairs.add(new BasicNameValuePair("name","lat lang"));
-
-                nameValuePairs.add(new BasicNameValuePair("mobile","200"));
-
-
-//        Log.d(“well2”, “msg”);
-                StrictMode.setThreadPolicy(policy);
-
-//        Log.d(“well3”, “msg”);
-//http post
-                try{
-                    HttpClient httpclient = new DefaultHttpClient();
-
-                    HttpPost httppost = new HttpPost(url);
-
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = httpclient.execute(httppost);
-                    HttpEntity entity = response.getEntity();
-                    InputStream is = entity.getContent();
-//            Log.d(“well4”, “msg”);
-
-//            Log.e(“log_tag”, “connection success “);
-                    //  Toast.makeText(getApplicationContext(), "Please Wait….", Toast.LENGTH_SHORT).show();
-                }
-
-                catch(Exception e)
-                {
-//            Log.e(“log_tag”, “Error in http connection “+e.toString());
-                    Toast.makeText(getApplicationContext(), "Connection fail", Toast.LENGTH_SHORT).show();
-//            Log.d(“well5”, “msg”);
-
-                }
-
-                getJSON(url2);
 
                 new CountDownTimer(10000,1000){
                     @Override
@@ -106,10 +71,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 };//.start();
 
-                /*LocationManager lm=(LocationManager)getSystemService(LOCATION_SERVICE);
+                LocationManager lm=(LocationManager)getSystemService(LOCATION_SERVICE);
                 LocationListener ll=new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
+
+                        ArrayList nameValuePairs = new ArrayList();
+
+                        nameValuePairs.add(new BasicNameValuePair("name","lat lang"));
+
+                        nameValuePairs.add(new BasicNameValuePair("mobile",String.valueOf(location.getLatitude())));
+
+
+//        Log.d(“well2”, “msg”);
+                        StrictMode.setThreadPolicy(policy);
+
+//        Log.d(“well3”, “msg”);
+//http post
+                        try{
+                            HttpClient httpclient = new DefaultHttpClient();
+
+                            HttpPost httppost = new HttpPost(url);
+
+                            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                            HttpResponse response = httpclient.execute(httppost);
+                            HttpEntity entity = response.getEntity();
+                            InputStream is = entity.getContent();
+//            Log.d(“well4”, “msg”);
+
+//            Log.e(“log_tag”, “connection success “);
+                            //  Toast.makeText(getApplicationContext(), "Please Wait….", Toast.LENGTH_SHORT).show();
+                        }
+
+                        catch(Exception e)
+                        {
+//            Log.e(“log_tag”, “Error in http connection “+e.toString());
+                            Toast.makeText(getApplicationContext(), "Connection fail", Toast.LENGTH_SHORT).show();
+//            Log.d(“well5”, “msg”);
+
+                        }
+
+                        getJSON(url2);
 
                     }
 
@@ -162,6 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String[] y=x;
         double ab=Double.parseDouble(y[x.length-1]);
         LatLng syd=new LatLng(-34,ab);
+        mMap.clear();
         mMap.addMarker(new MarkerOptions().position(syd).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(syd));
     }
