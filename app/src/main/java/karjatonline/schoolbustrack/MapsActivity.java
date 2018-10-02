@@ -164,12 +164,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void mapChange(String[][] x){
         String[][] y=x;
+//        Toast.makeText(this, "map changed"+y[x.length-1][0], Toast.LENGTH_SHORT).show();
         double lt=Double.parseDouble(y[x.length-1][0]);
         double ln=Double.parseDouble(y[x.length-1][1]);
         LatLng syd=new LatLng(lt,ln);
         mMap.clear();
+//        mMap.setMaxZoomPreference(5);
         mMap.addMarker(new MarkerOptions().position(syd).title("You're Here !"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(syd));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(syd,17));
     }
 
     private void getJSON(final String urlWebService) {
