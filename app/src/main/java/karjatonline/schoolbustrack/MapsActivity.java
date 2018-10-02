@@ -80,7 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         nameValuePairs.add(new BasicNameValuePair("name","lat lang"));
 
-                        nameValuePairs.add(new BasicNameValuePair("mobile",String.valueOf(location.getLatitude())));
+                        nameValuePairs.add(new BasicNameValuePair("lat",String.valueOf(location.getLatitude())));
+                        nameValuePairs.add(new BasicNameValuePair("lon",String.valueOf(location.getLongitude())));
 
 
 //        Log.d(“well2”, “msg”);
@@ -129,7 +130,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onProviderDisabled(String provider) {
 
                     }
-                };*/
+                };
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,1,ll);
             }
         });
 
@@ -156,16 +158,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title("You're Here !"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    public void mapChange(String[] x){
-        String[] y=x;
-        double ab=Double.parseDouble(y[x.length-1]);
-        LatLng syd=new LatLng(-34,ab);
+    public void mapChange(String[][] x){
+        String[][] y=x;
+        double lt=Double.parseDouble(y[x.length-1][0]);
+        double ln=Double.parseDouble(y[x.length-1][1]);
+        LatLng syd=new LatLng(lt,ln);
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(syd).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(syd).title("You're Here !"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(syd));
     }
 
@@ -200,10 +203,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 try {
                     JSONArray jsonArray = new JSONArray(s);
-                    String[] heroes = new String[jsonArray.length()];
+                    String[][] heroes = new String[jsonArray.length()][2];
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject obj = jsonArray.getJSONObject(i);
-                        heroes[i] = obj.getString("mobile");
+                        heroes[i][0] = obj.getString("lat");
+                        heroes[i][1]=obj.getString("lon");
                     }
                     mapChange(heroes);
                 }
