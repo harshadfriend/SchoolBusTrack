@@ -131,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 };
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,1,ll);
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,ll);
             }
         });
 
